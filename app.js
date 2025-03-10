@@ -1,12 +1,16 @@
 const express = require('express')
+require('express-async-errors')
 const app = express()
 const { PORT } = require('./config/config')
 const { connectToDatabase } = require('./utils/db')
 const blogsRouter = require('./controllers/blog')
+const { errorHandler } = require('./utils/middleware')
 
 app.use(express.json())
 
 app.use('/api/blogs', blogsRouter)
+
+app.use(errorHandler)
 
 const start = async () => {
   await connectToDatabase()
@@ -16,3 +20,5 @@ const start = async () => {
 }
 
 start()
+
+module.exports = app

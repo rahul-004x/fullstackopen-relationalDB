@@ -12,11 +12,12 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
     "pg": "^8.13.3",
     "sequelize": "^6.37.6"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9",
-    "@flydotio/dockerfile": "^0.7.8"
+    "@flydotio/dockerfile": "^0.7.8",
+    "nodemon": "^3.1.9"
   }
 }
