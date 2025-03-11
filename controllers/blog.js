@@ -3,7 +3,7 @@ const { Op } = require('sequelize')
 
 const { Blog, User } = require('../models')
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('../config/config')
+const { SECRET } = require('../utils/config')
 
 const blogFinder = async (req, res, next) => {
     const blog = await Blog.findByPk(req.params.id)
@@ -44,6 +44,7 @@ router.get('/', async (req, res) => {
     }
     
     const blogs = await Blog.findAll({
+        order: [['likes', 'DESC']],
         attributes: {exclude: ['userId']},
         include: {
             model: User,
