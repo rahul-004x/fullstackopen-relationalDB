@@ -16,6 +16,8 @@ const blogFinder = async (req, res, next) => {
 
 const tokenExtractor = (req, res, next) => {
     const authorization = req.get('authorization')
+    console.log('Authorization header:', authorization)
+    
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         try {
             req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
@@ -49,12 +51,14 @@ router.get('/:id', blogFinder, async (req, res) => {
     res.json(req.blog)
 })
 
-router.delete('/:id', blogFinder, async (req, res) => {
-    await req.blog.destroy()
+router.delete('/:id', tokenExtractor, blogFinder, async (req, res) => {
+    if (req.blog.userId === req.decodedToken.id) {
+        await req.blog.destroy()
+    }
     res.status(204).end()
 })
 
-router.put('/:id', blogFinder, async (req, res) => {
+router.put('/:id', tokenExtractor, blogFinder, async (req, res) => {
     req.blog.likes = req.body.likes
     await req.blog.save()
     res.json(req.blog)
