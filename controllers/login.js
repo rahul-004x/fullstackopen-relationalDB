@@ -4,7 +4,7 @@ const router = require('express').Router()
 const { SECRET } = require('../config/config')
 const { User } = require('../models')
 
-route.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const body = req.body
     const user = await User.findOne({
         where: {

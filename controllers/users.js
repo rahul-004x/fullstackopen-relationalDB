@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { User } = require('../models')
+const { User, Blog } = require('../models') // Fixed to properly import Blog
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({

@@ -26,7 +26,7 @@ Blog.init({
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true, // Changed to true to allow null values initially
         references: {
             model: 'users',
             key: 'id'

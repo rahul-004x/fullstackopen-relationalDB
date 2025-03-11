@@ -1,7 +1,8 @@
 const router = require('express').Router()
 
-const { Blog } = require('../models')
-const { User } = require('../models')
+const { Blog, User } = require('../models')
+const jwt = require('jsonwebtoken')
+const { SECRET } = require('../config/config')
 
 const blogFinder = async (req, res, next) => {
     const blog = await Blog.findByPk(req.params.id)
