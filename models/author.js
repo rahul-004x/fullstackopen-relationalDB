@@ -1,8 +1,8 @@
 const { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
 
-class Blog extends Model {}
-Blog.init({
+class Author extends Model {}
+Author.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,30 +12,19 @@ Blog.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    url: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    title: {
-        type: DataTypes.STRING,
+    articles: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     likes: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: true, 
-        references: {
-            model: 'users',
-            key: 'id'
-        }
     }
 }, {
     sequelize,
     underscored: true,
-    timestamps: true,
-    modelName: 'blogs'  
+    timestamps: false,
+    modelName: 'authors'
 })
- module.exports = Blog
+
+module.exports = Author
