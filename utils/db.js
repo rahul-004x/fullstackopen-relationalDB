@@ -4,7 +4,7 @@ const { Umzug, SequelizeStorage } = require('umzug')
 
 const sequelize = new Sequelize(DATABASE_URL)
 
-const runMingration = async () => {
+const runMigration = async () => {
     const migrator = new Umzug({
         migrations: {
             glob: 'migrations/*.js',
@@ -23,7 +23,7 @@ const runMingration = async () => {
 const connectToDatabase = async () => {
     try {
         await sequelize.authenticate()
-        await runMingration()
+        await runMigration()
         console.log('connect to database')
     } catch (err) {
         console.log('failed to connect to the database', err.message)

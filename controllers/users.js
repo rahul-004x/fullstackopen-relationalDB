@@ -1,20 +1,25 @@
 const router = require('express').Router()
 
-const { User, Blog } = require('../models') // Fixed to properly import Blog
+const { User, Blog } = require('../models') 
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
-    include: {
+    include: [
+      {
         model: Blog,
-        attributes: { exclude: ['userId']}
-    }
+        attributes: { exclude: ['userId'] }
+      },
+      {
+        model: Blog,
+        as: 'readingList',
+        attributes: { exclude: ['userId'] },
+        through: {
+          attributes: []
+        }
+      }
+    ]
   })
   res.json(users)
-})
-
-router.get('/', async (req, res) => {
-    const users = await User.findAll()
-    res.json(users)
 })
 
 router.post('/', async (req, res) => {
