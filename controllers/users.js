@@ -32,12 +32,31 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
-  if (user) {
-    res.json(user)
-  } else {
-    res.status(404).end()
+  const user = await User.findByPk(req.params.id, {
+    attributes: ['name', 'username'],
+    include: [
+      {
+        model: Blog,
+        as: 'readingList',
+        attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
+        through: {
+          attributes: [] 
+        }
+      }
+    ]
+  })
+  
+  if (!user) {
+    return res.status(404).end()
   }
+
+  const formattedUser = {
+    name: user.name,
+    username: user.username,
+    readings: user.readingList
+  }
+
+  res.json(formattedUser)
 })
 
 router.put('/:username', async (req, res) => {
