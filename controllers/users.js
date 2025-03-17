@@ -32,32 +32,40 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
+  const readStatus = req.query.read;
+  
+  const includeOptions = {
+    model: Blog,
+    as: 'readingList',
+    attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
+    through: {
+      attributes: ['read', 'id'],
+      as: 'readinglists'
+    }
+  };
+  
+  if (readStatus === 'true' || readStatus === 'false') {
+    includeOptions.through.where = {
+      read: readStatus === 'true'
+    };
+  }
+  
   const user = await User.findByPk(req.params.id, {
     attributes: ['name', 'username'],
-    include: [
-      {
-        model: Blog,
-        as: 'readingList',
-        attributes: ['id', 'url', 'title', 'author', 'likes', 'year'],
-        through: {
-          attributes: ['read', 'id'], 
-          as: 'readinglists'
-        }
-      }
-    ]
-  })
+    include: [includeOptions]
+  });
   
   if (!user) {
-    return res.status(404).end()
+    return res.status(404).end();
   }
 
   const formattedUser = {
     name: user.name,
     username: user.username,
     readings: user.readingList
-  }
+  };
 
-  res.json(formattedUser)
+  res.json(formattedUser);
 })
 
 router.put('/:username', async (req, res) => {
